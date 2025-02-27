@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+</head>
+<body>
+    <h2>Поиск фильмов</h2>
+    <input type="text" id="movieName" placeholder="Введите название фильма">
+    <button id="searchBtn">Поиск</button>
+    <div id="movieInfo"></div>
+
+    <script>
+        $("#searchBtn").click(function () {
+            let movieName = $("#movieName").val();
+            let apiKey = "547df6c8"; 
+            
+            let url = `https://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(movieName)}`;
+
+            $.getJSON(url, function (data) {
+                if (data.Response === "True") {
+                    $("#movieInfo").html(`
+                        <h3>${data.Title} (${data.Year})</h3>
+                        <img src="${data.Poster}" alt="Постер фильма" width="200">
+                        <p><strong>Жанр:</strong> ${data.Genre}</p>
+                        <p><strong>Режиссер:</strong> ${data.Director}</p>
+                        <p><strong>Актеры:</strong> ${data.Actors}</p>
+                        <p><strong>Описание:</strong> ${data.Plot}</p>
+                        <p><strong>IMDB рейтинг:</strong> ${data.imdbRating}</p>
+                    `);
+                } else {
+                    $("#movieInfo").html("<p>Фильм не найден!</p>");
+                }
+            });
+        });
+        
+    </script>
+</body>
+</html>
